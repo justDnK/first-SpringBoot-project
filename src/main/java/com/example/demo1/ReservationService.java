@@ -1,9 +1,10 @@
 package com.example.demo1;
 
-import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.concurrent.atomic.AtomicLong;
 
 import org.springframework.stereotype.Service;
 
@@ -11,30 +12,13 @@ import org.springframework.stereotype.Service;
 @Service
 public class ReservationService {
 
-    private final Map<Long, Reservation> reservationMap = Map.of(
-        3L, new Reservation(
-            3L, 
-            44L,
-            90L,
-            LocalDate.now(),
-            LocalDate.now().plusDays(5),
-            ReservationStatus.APPROVED
-        ),4L, new Reservation(
-            4L, 
-            24L,
-            100L,
-            LocalDate.now(),
-            LocalDate.now().plusDays(5),
-            ReservationStatus.APPROVED
-        ),7L, new Reservation(
-            5L, 
-            88L,
-            101L,
-            LocalDate.now(),
-            LocalDate.now().plusDays(5),
-            ReservationStatus.APPROVED
-        )
-    );
+    private final Map<Long, Reservation> reservationMap;
+    private final AtomicLong idCounter;
+
+    public ReservationService() {
+        reservationMap = new HashMap<>();
+        idCounter = new AtomicLong();
+    }
     
     public Reservation getReservationById(Long id) {
         if(!reservationMap.containsKey(id)) {
@@ -48,5 +32,29 @@ public class ReservationService {
         return reservationMap.values().stream().toList();
     }
 
+    public String showInfo() {
+        return "Hello world !";
+    }
+
+    public Reservation createReservation(Reservation reservationToCreate) {
+        if(reservationToCreate.id() != null) {
+            throw new IllegalArgumentException("Id must be null when creating a new reservation.");
+        }
+
+        if(reservationToCreate.status() != null) {
+            throw new IllegalArgumentException("Status must be null when creating a new reservation.");
+        }
+        
+        var newReservation = new Reservation(
+            idCounter.incrementAndGet(),
+            reservationToCreate.userId(),
+            reservationToCreate.roomId(),
+            reservationToCreate.startDate(),
+            reservationToCreate.endDate(),
+            ReservationStatus.PENDING
+        );
+        reservationMap.put(newReservation.id(), newReservation);
+        return newReservation;
+    }
 
 }
