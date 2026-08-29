@@ -33,7 +33,7 @@ public class ReservationService {
     }
 
     public String showInfo() {
-        return "Hello world !";
+        return "Hello Daniel !";
     }
 
     public Reservation createReservation(Reservation reservationToCreate) {
@@ -55,6 +55,10 @@ public class ReservationService {
         );
         reservationMap.put(newReservation.id(), newReservation);
         return newReservation;
+    }
+
+    public Long resultFunction(Long number) {
+        return number * 100;
     }
 
 }
