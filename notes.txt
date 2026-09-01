@@ -1,1 +1,35 @@
+01.09.2026
+
+мой код для создания контейнера в докер (cmd)
+
+Microsoft Windows [Version 10.0.26200.9168]
+(c) Корпорация Майкрософт (Microsoft Corporation). Все права защищены.
+
+C:\Users\01>netstat -ano | findstr :5432
+  TCP    0.0.0.0:5432           0.0.0.0:0              LISTENING       6848
+  TCP    [::]:5432              [::]:0                 LISTENING       6848
+
+C:\Users\01>docker ps
+failed to connect to the docker API at npipe:////./pipe/dockerDesktopLinuxEngine; check if the path is correct and if the daemon is running: open //./pipe/dockerDesktopLinuxEngine: The system cannot find the file specified.
+
+C:\Users\01>docker -v
+Docker version 29.7.2, build a7dcaa6
+
+C:\Users\01>docker ps
+failed to connect to the docker API at npipe:////./pipe/dockerDesktopLinuxEngine; check if the path is correct and if the daemon is running: open //./pipe/dockerDesktopLinuxEngine: The system cannot find the file specified.
+
+C:\Users\01>docker ps
+CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
+
+C:\Users\01>docker run --name my-postgres-2 -e POSTGRES_PASSWORD=root -p 5433:5432 -d postgres
+91d9eb7945bf91b705add49b0701ce3425d7a646f9b91f881190aae41a3fe2f4
+
+C:\Users\01>docker images
+                                                                                                                                        i Info →   U  In Use
+IMAGE             ID             DISK USAGE   CONTENT SIZE   EXTRA
+postgres:latest   4ef4dbc939d6        650MB          168MB    U
+
+C:\Users\01>docker ps
+CONTAINER ID   IMAGE      COMMAND                  CREATED              STATUS          PORTS                                         NAMES
+91d9eb7945bf   postgres   "docker-entrypoint.s…"   About a minute ago   Up 59 seconds   0.0.0.0:5433->5432/tcp, [::]:5433->5432/tcp   my-postgres-2
 
