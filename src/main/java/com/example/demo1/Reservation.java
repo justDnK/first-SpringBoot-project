@@ -2,6 +2,13 @@ package com.example.demo1;
 
 import java.time.LocalDate;
 
-public record Reservation(Long id, Long userId, Long roomId, LocalDate startDate, LocalDate endDate, ReservationStatus status) {
+public record Reservation(
+    Long id, 
+    Long userId, 
+    Long roomId, 
+    LocalDate startDate, 
+    LocalDate endDate, 
+    ReservationStatus status
+) {
 
 }
