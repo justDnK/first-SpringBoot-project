@@ -1,7 +1,6 @@
 package com.example.demo1;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -85,12 +84,9 @@ public class ReservationController {
         @PathVariable Long id
     ) {
         log.info("Called deleteReservation");
-        try {
-            reservationService.cancelReservation(id);
-            return ResponseEntity.ok().build();
-        } catch (NoSuchElementException e) {
-            return ResponseEntity.status(400).build();
-        }
+        reservationService.cancelReservation(id);
+        return ResponseEntity.ok().build();
+
     }
 
 
