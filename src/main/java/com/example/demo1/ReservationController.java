@@ -80,13 +80,13 @@ public class ReservationController {
     }
 
     // DeleteMapping — это аннотация, которая указывает, что метод контроллера будет обрабатывать HTTP‑запросы с методом DELETE. В данном случае мы используем ее для удаления существующего бронирования по его идентификатору (id). Метод принимает параметр id из пути URL, который указывает, какое бронирование нужно удалить. Логирование используется для отслеживания вызова метода, а ResponseEntity позволяет вернуть HTTP‑статус 200 OK без тела ответа, что означает успешное удаление ресурса.
-    @DeleteMapping("/{id}")
+    @DeleteMapping("cancel/{id}")
     public ResponseEntity<Void> deleteReservation(
         @PathVariable Long id
     ) {
         log.info("Called deleteReservation");
         try {
-            reservationService.deleteReservation(id);
+            reservationService.cancelReservation(id);
             return ResponseEntity.ok().build();
         } catch (NoSuchElementException e) {
             return ResponseEntity.status(400).build();

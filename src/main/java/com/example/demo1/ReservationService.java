@@ -3,8 +3,11 @@ package com.example.demo1;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import ch.qos.logback.classic.Logger;
 import jakarta.persistence.EntityNotFoundException;
 
 // аннотация которая задает бизнес логику приложения
@@ -13,10 +16,11 @@ public class ReservationService {
 
     private final Demo1Application demo1Application;
 
-
     // DB
     private final ReservationRepository repository;
     //
+
+    private final Logger log = (Logger) LoggerFactory.getLogger(ReservationService.class);
     
     public ReservationService(ReservationRepository repository, Demo1Application demo1Application) {
         this.repository = repository;
@@ -48,6 +52,7 @@ public class ReservationService {
     public List<Reservation> findAllReservations() {
         List<ReservationEntity> allEnteties = repository.findAll();
 
+        repository.findAllByStatusIs(ReservationStatus.APPROVED);
         /*
         reservationList - это список объектов Reservation, который 
         создается путем преобразования каждого объекта ReservationEntity 
@@ -120,13 +125,13 @@ public class ReservationService {
     }
 
 
-
-    public void deleteReservation(Long id) {
+    @Transactional
+    public void cancelReservation(Long id) {
         if (!repository.existsById(id)) {
             throw new NoSuchElementException("id doesnt exist");
         }
-        
-        repository.deleteById(id);
+        repository.setStatus(id, ReservationStatus.CANCELLED);
+        log.info("Status changed on CANCEL id={}", id);
     }
 
     // потверждение резервации 
